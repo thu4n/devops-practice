@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/thu4n/devops-practice'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker compose build'
+            }
+        }
+        // No testing is needed currently.
+        // stage('Test') {
+        //     steps {
+                
+        //     }
+        // }
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose up -d --build'
+            }
+        }
+    }
+}
