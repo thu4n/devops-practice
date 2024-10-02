@@ -12,8 +12,13 @@ type Message struct {
 	Text string `json:"text"`
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func getMessage(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Got an API request!\n")
+	enableCors(&w)
+	fmt.Printf("\nGot an API request!\n")
 	message := Message{Text: "Hello from Go API!"}
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Printf("Responed with %s", message.Text)
@@ -22,9 +27,9 @@ func getMessage(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/api/message", getMessage)
-	println("Server is listening at port 8000")
+	println("Server is listening at port 8080")
 
-	err := http.ListenAndServe(":8000", nil)
+	err := http.ListenAndServe(":8080", nil)
 
 	if errors.Is(err, http.ErrServerClosed) {
 		fmt.Printf("server closed\n")

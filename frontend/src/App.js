@@ -8,7 +8,7 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/message')
+    fetch('http://backend:8080/api/message')
     .then(response => response.json())
     .then(data => setMessage(data.text));
   }, []);
