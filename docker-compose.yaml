@@ -9,4 +9,4 @@ services:
 
   proxy:
     build: ./proxy
-    ports: ['8000:80']
+    ports: ['80:80']
