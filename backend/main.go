@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go-backend/database"
 	"net/http"
 	"os"
 )
@@ -34,6 +35,8 @@ func getMessage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	database.ConnectDb()
+
 	http.HandleFunc("/message", getMessage)
 	println("Server is listening at port 5000")
 
