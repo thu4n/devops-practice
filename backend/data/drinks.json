@@ -1,0 +1,124 @@
+[
+    {
+        "Name": "Bac Xiu",
+        "Description": "Vietnamese white coffee, the best one on this menu",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 2.50
+            },
+            {
+                "Size": "Medium",
+                "Price": 3.25
+            },
+            {
+                "Size": "Large",
+                "Price": 4.00
+            }
+        ]
+    },
+    {
+        "Name": "Red Sting With Milk",
+        "Description": "Don't ask why, it just tastes good",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 2.00
+            },
+            {
+                "Size": "Medium",
+                "Price": 3.00
+            },
+            {
+                "Size": "Large",
+                "Price": 4.00
+            }
+        ]
+    },
+    {
+        "Name": "Latte",
+        "Description": "A creamy blend of espresso and steamed milk",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 3.00
+            },
+            {
+                "Size": "Medium",
+                "Price": 3.50
+            },
+            {
+                "Size": "Large",
+                "Price": 4.00
+            }
+        ]
+    },
+    {
+        "Name": "Cappuccino",
+        "Description": "Espresso with a thick layer of frothy milk",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 3.00
+            },
+            {
+                "Size": "Medium",
+                "Price": 3.75
+            },
+            {
+                "Size": "Large",
+                "Price": 4.25
+            }
+        ]
+    },
+    {
+        "Name": "Espresso",
+        "Description": "A strong shot of coffee",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 2.00
+            },
+            {
+                "Size": "Medium",
+                "Price": 2.50
+            }
+        ]
+    },
+    {
+        "Name": "Mocha",
+        "Description": "Espresso mixed with chocolate and steamed milk",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 3.50
+            },
+            {
+                "Size": "Medium",
+                "Price": 4.00
+            },
+            {
+                "Size": "Large",
+                "Price": 4.50
+            }
+        ]
+    },
+    {
+        "Name": "Americano",
+        "Description": "Espresso with added hot water",
+        "DrinkSizes": [
+            {
+                "Size": "Small",
+                "Price": 2.50
+            },
+            {
+                "Size": "Medium",
+                "Price": 3.00
+            },
+            {
+                "Size": "Large",
+                "Price": 3.50
+            }
+        ]
+    }
+]
