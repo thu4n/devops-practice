@@ -1,8 +1,10 @@
 package database
 
 import (
+	"encoding/json"
 	"fmt"
 	"go-backend/models"
+	"io"
 	"log"
 	"os"
 
@@ -15,7 +17,12 @@ type DbInstance struct {
 	Db *gorm.DB
 }
 
-var DB DbInstance
+var Postgres DbInstance
+
+func Init() {
+	ConnectDb()
+	PopulateDrinks("data/drinks.json")
+}
 
 func ConnectDb() {
 	dsn := fmt.Sprintf(
@@ -25,7 +32,7 @@ func ConnectDb() {
 		os.Getenv("DB_NAME"),
 	)
 
-	postgresdb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 
@@ -35,12 +42,48 @@ func ConnectDb() {
 	}
 
 	log.Println("Connected to the elephant")
-	postgresdb.Logger = logger.Default.LogMode(logger.Info) // Set log from db to info mode
+	db.Logger = logger.Default.LogMode(logger.Info) // Set log from db to info mode
 
 	log.Println("Migrating data models")
-	postgresdb.AutoMigrate(&models.User{}) // Migrate only User for now, more later
+	db.AutoMigrate(
+		&models.User{},
+		&models.Drink{},
+		&models.DrinkSize{},
+		&models.Order{},
+		&models.OrderItem{},
+	)
 
-	DB = DbInstance{
-		Db: postgresdb,
+	Postgres = DbInstance{
+		Db: db,
 	}
+
+}
+
+// Insert the sample JSON data into the elephant db instance
+func PopulateDrinks(filePath string) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Fatal("failed to open JSON file: %w", err)
+		os.Exit(2)
+	}
+	defer file.Close()
+
+	byteValue, _ := io.ReadAll(file)
+
+	var drinks []models.Drink
+
+	err = json.Unmarshal(byteValue, &drinks)
+	if err != nil {
+		log.Fatal("failed to parse JSON: %w", err)
+		os.Exit(2)
+	}
+
+	for _, drink := range drinks {
+		if err := Postgres.Db.Create(&drink).Error; err != nil {
+			log.Fatal("failed to insert drink: %w", err)
+			os.Exit(2)
+		}
+	}
+
+	log.Println("Database populated successfully")
 }
