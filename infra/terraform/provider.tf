@@ -9,18 +9,13 @@ terraform {
 
 variable "do_token" {}
 variable "pvt_key" {}
-variable "pub_key" {
-
-}
+variable "pub_key" {}
+variable "key_name" {}
 
 provider "digitalocean" {
   token = var.do_token
 }
 
-# data "digitalocean_ssh_key" "terraform" {
-#   name = "terraform"
-# }
-
-data "digitalocean_ssh_key" "bgsv-ubuntu" {
-  name = "bgsv-ubuntu"
+data "digitalocean_ssh_key" "do_ssh_key" {
+  name = var.key_name
 }

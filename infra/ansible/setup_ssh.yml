@@ -1,0 +1,23 @@
+---
+- hosts: jenkins-server
+  become: true
+  tasks:
+    - name: Generate SSH keypairs
+      openssh_keypair:
+        path: /home/thu4n/jenkins_home/.ssh/id_rsa
+        state: present
+
+    - name: Fetch public key
+      ansible.builtin.slurp:
+        src: /home/thu4n/jenkins_home/.ssh/id_rsa.pub
+      register: jenkins_public_key
+
+- hosts: web-app
+  become: true
+  tasks:
+    - name: Add Jenkins public key to authorized_keys on web app droplet
+      ansible.builtin.lineinfile:
+        path: "/home/thu4n/.ssh/authorized_keys"
+        line: "{{ jenkins_public_key['content'] | b64decode }}"
+        create: true
+        state: present

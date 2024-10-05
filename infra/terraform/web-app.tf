@@ -3,7 +3,7 @@ resource "digitalocean_droplet" "web-app" {
   name     = "web-app"
   region   = "sgp1"
   size     = "s-2vcpu-2gb"
-  ssh_keys = [data.digitalocean_ssh_key.bgsv-ubuntu.id]
+  ssh_keys = [data.digitalocean_ssh_key.do_ssh_key.id]
   connection {
     host        = self.ipv4_address
     user        = "root"
@@ -20,6 +20,10 @@ resource "digitalocean_droplet" "web-app" {
   provisioner "local-exec" {
     command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i '${self.ipv4_address},' --private-key ${var.pvt_key} -e 'pub_key=${var.pub_key}' ../ansible/install_webapp.yml"
   }
+}
+
+output "webapp-ip" {
+  value = digitalocean_droplet.web-app.ipv4_address
 }
 
 resource "digitalocean_firewall" "web-app-firewall" {

@@ -6,7 +6,7 @@
     - name: Clone GitHub repository
       git:
         repo: 'https://github.com/thu4n/devops-practice'
-        dest: /home/devops-practice
+        dest: /home/thu4n/devops-practice
 
     - name: Run Docker compose
-      command: docker compose up -d --build chdir=/home/devops-practice
+      command: docker compose up -d --build chdir=/home/thu4n/devops-practice

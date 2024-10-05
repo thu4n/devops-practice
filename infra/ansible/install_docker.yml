@@ -13,12 +13,14 @@
         user: thu4n
         state: present
         key: "{{ lookup('file', pub_key) }}"
-        
+
     - name: Install aptitude
       apt:
         name: aptitude
         state: latest
         update_cache: true
+        # The above line got me error when running in WSL-Ubuntu, potential fix so far:
+        # https://github.com/ansible/ansible/issues/30754#issuecomment-508997294
 
     - name: Install required system packages
       apt:
@@ -49,3 +51,12 @@
         - docker-compose-plugin
         state: latest
         update_cache: true
+
+    - name: Add the 'docker' group
+      group: name=docker state=present
+
+    - name: Add to 'docker'
+      user:
+        name: thu4n 
+        groups: docker
+        append: true
