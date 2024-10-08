@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
+	"log"
 	"os"
 
 	"github.com/charmbracelet/bubbles/list"
@@ -10,6 +13,18 @@ import (
 )
 
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
+
+type Drink struct {
+	Name        string
+	Description string
+	DrinkSizes  []DrinkSize
+}
+
+type DrinkSize struct {
+	DrinkID uint
+	Size    string  // "Small", "Medium", "Large"
+	Price   float32 // Price for this size
+}
 
 type item struct {
 	title, desc string
@@ -48,34 +63,35 @@ func (m model) View() string {
 }
 
 func main() {
-	items := []list.Item{
-		item{title: "Raspberry Pi’s", desc: "I have ’em all over my house"},
-		item{title: "Nutella", desc: "It's good on toast"},
-		item{title: "Bitter melon", desc: "It cools you down"},
-		item{title: "Nice socks", desc: "And by that I mean socks without holes"},
-		item{title: "Eight hours of sleep", desc: "I had this once"},
-		item{title: "Cats", desc: "Usually"},
-		item{title: "Plantasia, the album", desc: "My plants love it too"},
-		item{title: "Pour over coffee", desc: "It takes forever to make though"},
-		item{title: "VR", desc: "Virtual reality...what is there to say?"},
-		item{title: "Noguchi Lamps", desc: "Such pleasing organic forms"},
-		item{title: "Linux", desc: "Pretty much the best OS"},
-		item{title: "Business school", desc: "Just kidding"},
-		item{title: "Pottery", desc: "Wet clay is a great feeling"},
-		item{title: "Shampoo", desc: "Nothing like clean hair"},
-		item{title: "Table tennis", desc: "It’s surprisingly exhausting"},
-		item{title: "Milk crates", desc: "Great for packing in your extra stuff"},
-		item{title: "Afternoon tea", desc: "Especially the tea sandwich part"},
-		item{title: "Stickers", desc: "The thicker the vinyl the better"},
-		item{title: "20° Weather", desc: "Celsius, not Fahrenheit"},
-		item{title: "Warm light", desc: "Like around 2700 Kelvin"},
-		item{title: "The vernal equinox", desc: "The autumnal equinox is pretty good too"},
-		item{title: "Gaffer’s tape", desc: "Basically sticky fabric"},
-		item{title: "Terrycloth", desc: "In other words, towel fabric"},
+	filePath := "/home/dev/devops-practice/backend/data/drinks.json"
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Fatal("failed to open JSON file: %w", err)
+		os.Exit(2)
+	}
+	defer file.Close()
+
+	byteValue, _ := io.ReadAll(file)
+
+	var drinks []Drink
+
+	err = json.Unmarshal(byteValue, &drinks)
+	if err != nil {
+		log.Fatal("failed to parse JSON: %w", err)
+		os.Exit(2)
+	}
+	items := make([]list.Item, len(drinks))
+
+	for index, drink := range drinks {
+		drink_item := item{
+			title: drink.Name,
+			desc:  drink.Description,
+		}
+		items[index] = drink_item
 	}
 
 	m := model{list: list.New(items, list.NewDefaultDelegate(), 0, 0)}
-	m.list.Title = "My Fave Things"
+	m.list.Title = "Coffee2Go"
 
 	p := tea.NewProgram(m, tea.WithAltScreen())
 
