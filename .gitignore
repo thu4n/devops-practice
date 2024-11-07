@@ -63,3 +63,6 @@ infra/terraform/.terraform.lock.hcl
 # Ignore CLI configuration files
 infra/.terraformrc
 infra/terraform.rc
+
+# For some reasons, I don't want VS Code config to be in sync
+.vscode
